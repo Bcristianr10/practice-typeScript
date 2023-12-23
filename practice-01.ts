@@ -85,3 +85,143 @@ const example: boolean | number = true
 
 
 // El Union Types es un OR(|) y el Intersection Type es un AND(&)
+
+
+// Tipar arrays
+const array: string[] = []
+const lenaguages: (string| number | boolean)[] =  []
+lenaguages.push('JavaScript')
+lenaguages.push('JavaScript')
+lenaguages.push('JavaScript')
+lenaguages.push('JavaScript')
+lenaguages.push(2)
+lenaguages.push(true)
+// Se puede hacer una array de datos con los tipos de datos creados
+
+
+/*
+    Matrices y Tuplas
+    Las tuplas es un array que tiene un numero de longitud fijado
+    []
+*/
+type CellValue ='X'|'O'|''
+type GameBoard = [
+    [CellValue,CellValue,CellValue],
+    [CellValue,CellValue,CellValue],
+    [CellValue,CellValue,CellValue]
+]
+
+const gameBoard: GameBoard =[
+    ['X','',''],
+    ['','X',''],
+    ['','','X']
+]
+
+
+// Enums
+
+const enum ERROR_TYPES {
+    NOT_FOUND,
+    UNAUTHORIZED,
+    FORBIDDEN
+}
+
+function mostrarMensaje (tipoDeError: ERROR_TYPES) {
+    if(tipoDeError === ERROR_TYPES.NOT_FOUND){
+        console.log('No se encuentra el recurso')
+    }else if(tipoDeError === ERROR_TYPES.UNAUTHORIZED){
+        console.log('No tienes permisos para acceder')
+    }else if(tipoDeError === ERROR_TYPES.FORBIDDEN){
+        console.log('No tienes permisos para acceder')
+    }
+}
+
+
+
+// Obtenemos el elemento canvas por su id
+const canvas = document.getElementById('canvas')
+// Trae Null si no lo encuentra o HTMLElement si lo encuentra
+// Como sabe typeScript que realmente esta recuperando un elemento <canvas /> ?
+// Verificamos si el elemento canvas es una instancia de HTMLCanvasElement
+if(canvas instanceof HTMLCanvasElement){
+    // Si es así, creamos un contexto 2D para el canvas
+    const ctx = canvas.getContext('2d')
+}
+
+
+// Interfaces
+// 🌟 Declaración de la interfaz Producto 🌟
+interface Producto {
+    id: number
+    nombre:string
+    precio:number
+    quantity:number
+}
+
+// 🌟 Declaración de la interfaz Zapatilla que extiende la interfaz Producto 🌟
+interface Zapatilla extends Producto{
+    talla:number
+}
+
+// 🌟 Declaración de la interfaz CarritoDeCompras 🌟
+interface CarritoDeCompras {
+    totalPrice:number
+    productos:(Producto | Zapatilla)[]
+}
+
+// Indicar funciones en las interfaces
+interface CarritoOps{
+    add: (product: Producto) => void,
+    remove: (id: number) => void,
+    clear: () => void
+}
+
+/*
+O de esta otra forma
+ interface CarritoOps{
+    add(product: Producto): void,
+    remove(id: number): void,
+    clear(): void
+}
+ */
+
+
+
+// 🌟 Declaración del objeto carrito, que sigue la estructura de la interfaz CarritoDeCompras 🌟
+const carrito: CarritoDeCompras ={
+    totalPrice:100,
+    productos:[
+        {
+            id:1,
+            nombre:'',
+            precio:21,
+            quantity:1
+        }
+    ]
+}
+
+interface Mario {
+    nombre:string
+    saltar (): void
+}
+
+interface Sonic {
+    nombre:string
+    correr (): void
+}
+
+type Personaje = Mario | Sonic
+
+
+// Type Guard, Validar que el persona es sonic, para discrimiar el tipo
+function CheckIsSonic (personaje: Personaje):personaje is Sonic{
+    return (personaje as Sonic).correr !== undefined
+}
+
+// HAY QUE EVITAR LOS TYPE GUARDS
+function jugar(personaje: Personaje){
+    if(CheckIsSonic(personaje)){
+        return personaje.correr
+    }
+    return personaje.saltar
+}
